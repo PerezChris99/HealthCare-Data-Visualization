@@ -1,4 +1,4 @@
-# Full-Stack Smart Healthcare Data Visualization Web App
+# Full-Stack Smart Healthcare Data Visualization
 
 ## Overview
 This project is a full-stack web application designed for visualizing patient health data. It utilizes Flask for the backend and Vanilla JavaScript for the frontend, providing a user-friendly interface for both doctors and patients.
