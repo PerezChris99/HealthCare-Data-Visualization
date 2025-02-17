@@ -42,8 +42,8 @@ healthcare-app
 ## Setup Instructions
 1. **Clone the repository**:
    ```
-   git clone <repository-url>
-   cd healthcare-app
+   git clone https://github.com/PerezChris99/HealthCare-Data-Visualization
+   cd HealthCare-Data-visualization
    ```
 
 2. **Set up the backend**:

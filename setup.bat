@@ -7,7 +7,7 @@ echo Activating virtual environment...
 env\Scripts\activate
 
 echo Installing backend dependencies...
-pip install -r backend\requirements.txt
+pip install -r backend/requirements.txt
 
 echo Setup complete!
 pause
