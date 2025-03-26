@@ -3,207 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Healthcare Data Visualization</title>
+    <title>HealthViz - Modern Healthcare Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
 </head>
 <body class="light-mode">
-    <header>
-        <h1>Healthcare Data Visualization</h1>
+    <div class="loading hidden"></div>
+    <header class="app-header">
+        <div class="logo">
+            <h1>Health<span class="highlight">Viz</span></h1>
+        </div>
+            <a href="{{ url_for('dashboard') }}" id="dashboard-link" class="nav-button">Dashboard</a>
+            <button id="profile-link" class="nav-button">Profile</button>
+            <button id="logout-button" class="nav-button">Logout</button>
+        </nav>
         <div class="theme-toggle">
             <label class="switch">
                 <input type="checkbox" id="theme-toggle">
                 <span class="slider round"></span>
             </label>
-            <span class="theme-label">Dark Mode</span>
-        </div>
-        <div id="auth-controls" class="auth-controls">
-            <button id="login-button">Login</button>
-            <button id="register-button">Register</button>
-        </div>
-        <div id="user-controls" class="user-controls hidden">
-            <span id="user-welcome">Welcome</span>
-            <button id="logout-button">Logout</button>
         </div>
     </header>
 
     <main id="main-content">
-        <!-- Login Form -->
-        <section id="login-section" class="auth-section">
-            <div class="form-container">
-                <h2>Login</h2>
-                <form id="login-form">
-                    <div class="form-group">
-                        <label for="login-email">Email</label>
-                        <input type="email" id="login-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="login-password">Password</label>
-                        <input type="password" id="login-password" required>
-                    </div>
-                    <button type="submit" class="btn-primary">Login</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Registration Form -->
-        <section id="register-section" class="auth-section hidden">
-            <div class="form-container">
-                <h2>Register</h2>
-                <form id="register-form">
-                    <div class="form-group">
-                        <label for="register-email">Email</label>
-                        <input type="email" id="register-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-password">Password</label>
-                        <input type="password" id="register-password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-name">Full Name</label>
-                        <input type="text" id="register-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-age">Age</label>
-                        <input type="number" id="register-age" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-role">Role</label>
-                        <select id="register-role" required>
-                            <option value="patient">Patient</option>
-                            <option value="doctor">Doctor</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="medical-history-group">
-                        <label for="register-medical-history">Medical History</label>
-                        <textarea id="register-medical-history"></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary">Register</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Doctor Dashboard -->
-        <section id="doctor-dashboard" class="dashboard hidden">
+        <section id="dashboard" class="dashboard-section">
             <div class="dashboard-header">
-                <h2>Doctor Dashboard</h2>
-                <div class="search-container">
-                    <input type="text" id="patient-search" placeholder="Search patients...">
+                <h2>Welcome, <span id="user-name">User</span></h2>
+                <div class="metrics-summary">
+                    <div class="metric-card">
+                        <h3>Blood Pressure</h3>
+                        <p id="blood-pressure-summary">120/80</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Glucose</h3>
+                        <p id="glucose-summary">90 mg/dL</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Heart Rate</h3>
+                        <p id="heart-rate-summary">72 bpm</p>
+                    </div>
                 </div>
             </div>
-            
-            <div class="dashboard-content">
-                <div class="patient-list-container">
-                    <h3>Patient List</h3>
-                    <ul id="patient-list" class="patient-list"></ul>
-                </div>
-                
-                <div class="patient-details-container hidden" id="patient-details">
-                    <h3 id="patient-name-header"></h3>
-                    <div class="patient-info">
-                        <p><strong>Age:</strong> <span id="patient-age"></span></p>
-                        <p><strong>Medical History:</strong> <span id="patient-medical-history"></span></p>
-                    </div>
-                    
-                    <div class="metrics-container">
-                        <h4>Health Metrics</h4>
-                        <div class="metrics-controls">
-                            <select id="metric-type-selector">
-                                <option value="blood_pressure">Blood Pressure</option>
-                                <option value="glucose">Glucose</option>
-                                <option value="heart_rate">Heart Rate</option>
-                            </select>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="metrics-chart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <div class="add-metric-form">
-                        <h4>Add New Metric</h4>
-                        <form id="add-metric-form">
-                            <div class="form-group">
-                                <label for="new-metric-type">Metric Type</label>
-                                <select id="new-metric-type">
-                                    <option value="blood_pressure">Blood Pressure</option>
-                                    <option value="glucose">Glucose</option>
-                                    <option value="heart_rate">Heart Rate</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="new-metric-value">Value</label>
-                                <input type="number" id="new-metric-value" step="0.01" required>
-                            </div>
-                            <button type="submit" class="btn-primary">Add Metric</button>
-                        </form>
-                    </div>
+            <div class="chart-section">
+                <h3>Health Metrics Over Time</h3>
+                <div class="chart-container">
+                    <canvas id="health-metrics-chart"></canvas>
                 </div>
             </div>
         </section>
 
-        <!-- Patient Dashboard -->
-        <section id="patient-dashboard" class="dashboard hidden">
-            <h2>Patient Dashboard</h2>
-            
-            <div class="dashboard-content">
-                <div class="patient-info-card">
-                    <h3>Personal Information</h3>
-                    <p><strong>Name:</strong> <span id="patient-own-name"></span></p>
-                    <p><strong>Age:</strong> <span id="patient-own-age"></span></p>
-                    <p><strong>Medical History:</strong> <span id="patient-own-medical-history"></span></p>
-                </div>
-                
-                <div class="metrics-container">
-                    <h3>My Health Metrics</h3>
-                    <div class="metrics-controls">
-                        <select id="patient-metric-type-selector">
-                            <option value="blood_pressure">Blood Pressure</option>
-                            <option value="glucose">Glucose</option>
-                            <option value="heart_rate">Heart Rate</option>
-                        </select>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="patient-metrics-chart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="add-metric-form">
-                    <h3>Log New Health Data</h3>
-                    <form id="patient-add-metric-form">
-                        <div class="form-group">
-                            <label for="patient-new-metric-type">Metric Type</label>
-                            <select id="patient-new-metric-type">
-                                <option value="blood_pressure">Blood Pressure</option>
-                                <option value="glucose">Glucose</option>
-                                <option value="heart_rate">Heart Rate</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="patient-new-metric-value">Value</label>
-                            <input type="number" id="patient-new-metric-value" step="0.01" required>
-                        </div>
-                        <button type="submit" class="btn-primary">Add Metric</button>
-                    </form>
-                </div>
-                
-                <div class="notifications-container">
-                    <h3>Notifications</h3>
-                    <ul id="notifications-list" class="notifications-list">
-                        <li class="notification">Remember to check your blood pressure today</li>
-                        <li class="notification">Appointment with Dr. Smith on Friday at 10:00 AM</li>
-                    </ul>
-                </div>
+        <section id="profile" class="profile-section hidden">
+            <div class="profile-card">
+                <h2>Profile</h2>
+                <p><strong>Name:</strong> <span id="profile-name">John Doe</span></p>
+                <p><strong>Age:</strong> <span id="profile-age">30</span></p>
+                <p><strong>Role:</strong> <span id="profile-role">Patient</span></p>
+                <p><strong>Medical History:</strong></p>
+                <p id="profile-medical-history">No significant history.</p>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2023 Healthcare Data Visualization App</p>
+    <footer class="app-footer">
+        <p>&copy; 2023 Health<span class="highlight">Viz</span>. All rights reserved.</p>
     </footer>
 
-    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 </body>
 </html>

@@ -25,6 +25,10 @@ def create_tables():
 def home():
     return render_template('index.html')
 
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()

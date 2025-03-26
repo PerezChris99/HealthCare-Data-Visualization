@@ -17,6 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const patientMetricTypeSelector = document.getElementById('patient-metric-type-selector');
     const patientAddMetricForm = document.getElementById('patient-add-metric-form');
 
+    // DOM elements - Loading and Animations
+    const loading = document.querySelector('.loading');
+    const dashboardLink = document.getElementById('dashboard-link');
+    const profileLink = document.getElementById('profile-link');
+    const dashboardSection = document.getElementById('dashboard');
+    const profileSection = document.getElementById('profile');
+
     // Event listeners
     if (metricTypeSelector) {
         metricTypeSelector.addEventListener('change', updateMetricChart);
@@ -37,6 +44,38 @@ document.addEventListener('DOMContentLoaded', () => {
     if (patientAddMetricForm) {
         patientAddMetricForm.addEventListener('submit', addPatientMetric);
     }
+
+    // Show loading when fetching data
+    async function fetchHealthData() {
+        showLoading();
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        hideLoading();
+    }
+
+    // Simulate loading state
+    function showLoading() {
+        loading.classList.remove('hidden');
+    }
+    
+    function hideLoading() {
+        loading.classList.add('hidden');
+    }
+
+    // Handle tab switching
+    dashboardLink.addEventListener('click', () => {
+        profileSection.classList.add('hidden');
+        dashboardSection.classList.remove('hidden');
+        fetchHealthData();
+    });
+    
+    profileLink.addEventListener('click', () => {
+        dashboardSection.classList.add('hidden');
+        profileSection.classList.remove('hidden');
+    });
+
+    // Initial load
+    fetchHealthData();
 
     // Load patients for doctor dashboard
     window.loadPatients = async function() {
@@ -264,4 +303,33 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('An error occurred while adding the metric.');
         }
     }
+
+    // Theme Toggle
+    document.getElementById('theme-switch').addEventListener('change', (e) => {
+        document.body.classList.toggle('dark-mode', e.target.checked);
+    });
+
+    // Notifications Toggle
+    document.getElementById('notifications-btn').addEventListener('click', () => {
+        document.querySelector('.notifications-panel').classList.toggle('hidden');
+    });
+
+    // Initialize Charts
+    const ctx = document.getElementById('vitalsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Blood Pressure',
+                data: [120, 125, 118, 129, 116, 120],
+                borderColor: '#00BFA6',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
 });
