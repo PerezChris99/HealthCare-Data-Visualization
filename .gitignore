@@ -1,0 +1,64 @@
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env*.local
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+.project
+.settings/
+
+# Logs
+logs/
+*.log
+
+# Testing
+coverage/
+.nyc_output/
+
+# Healthcare data files (potentially sensitive)
+*.csv
+*.xlsx
+*.xls
+*.json
+!package.json
+!tsconfig.json
+!public/*.json
+
+# Cached data
+.cache/
+.parcel-cache/
+
+# Temporary files
+tmp/
+temp/
+
+# Configuration files with potential secrets
+config.js
+config.json
+auth.json
+credentials.json
+
+# Local development overrides
+*.override.*
